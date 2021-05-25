@@ -1,6 +1,6 @@
 # docker-jdbc
 
-init. a Postgres container, mapping port to 5435
+init. a Postgres container, mapping container internal port 5432 to the local system at the port 5435
 
 ````
 docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -d postgres:latest

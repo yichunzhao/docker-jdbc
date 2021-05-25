@@ -15,3 +15,18 @@ Linking the Postgres container to a new server
 
 ![image](https://user-images.githubusercontent.com/17804600/119435564-a7fb5d80-bd1a-11eb-924d-bb90ae279ec2.png)
 
+docker run [options]
+
+docker run --help
+
+````
+-p, --publish list                   Publish a container's port(s) to
+                                       the host
+-e, --env list                       Set environment variables
+
+-d, --detach                         Run container in background and
+                                       print container ID
+````
+
+![image](https://user-images.githubusercontent.com/17804600/119532437-2a206c00-bd85-11eb-8a96-e25d81c23902.png)
+

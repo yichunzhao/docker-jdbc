@@ -30,3 +30,12 @@ docker run --help
 
 ![image](https://user-images.githubusercontent.com/17804600/119532437-2a206c00-bd85-11eb-8a96-e25d81c23902.png)
 
+Connecting to PostgreSql container via docker Exec 
+
+![image](https://user-images.githubusercontent.com/17804600/119606115-3d1d5580-bdf2-11eb-95d3-ad2960724899.png)
+
+Connecting to PostgreSql container via SQL shell(psql) 
+
+![image](https://user-images.githubusercontent.com/17804600/119606214-71911180-bdf2-11eb-87a6-08342c16b089.png)
+
+

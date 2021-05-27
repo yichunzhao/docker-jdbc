@@ -1,10 +1,10 @@
-package com.ynz.demo.dao;
+package com.ynz.demo.dockerjdbc.dao;
 
 public interface CrudeMethods<T, ID> {
 
     T findById(ID id);
 
-    T save(T entity);
+    int insert(T entity);
 
     T update(ID id, T entity);
 

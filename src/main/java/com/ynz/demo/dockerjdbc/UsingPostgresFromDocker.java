@@ -1,4 +1,4 @@
-package com.ynz.demo;
+package com.ynz.demo.dockerjdbc;
 
 public class UsingPostgresFromDocker {
 

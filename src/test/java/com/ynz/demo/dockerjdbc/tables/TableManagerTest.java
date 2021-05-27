@@ -17,7 +17,7 @@ class TableManagerTest {
 
     @Test
     void createTable() {
-        String sql = "CREATE TABLE Person(PersonId int, LastName varchar(255), FirstName varchar(255))";
+        String sql = "CREATE TABLE Person values(PersonId int, FirstName varchar(255)), LastName varchar(255)";
         int result = manager.createTable(sql);
         assertThat(result, is(not(-1)));
     }

@@ -5,11 +5,15 @@ import com.ynz.demo.dockerjdbc.domain.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
 class PostgresSqlDBDaoTest {
-    private CrudeMethods crudeMethods;
+    private CrudeMethods<Person, Integer> crudeMethods;
 
     public PostgresSqlDBDaoTest() {
         this.crudeMethods = new PostgresSqlDBDao(DatabaseConnFactory.defaultPostgresSqlConn());
@@ -17,11 +21,25 @@ class PostgresSqlDBDaoTest {
 
     @Test
     void findById() {
+        Person found = crudeMethods.findById(101);
+
+        assertAll(
+                () -> assertNotNull(found),
+                () -> assertThat(found.getFirstName(), is("Tom"))
+        );
     }
 
     @Test
-    void insert() {
+    void insertOneRaw_ThenOneRowImpacted() {
         Person person = Person.builder().firstName("Mike").lastName("Zhao").personId(100).build();
+        int result = crudeMethods.insert(person);
+        log.info("insert result: %d \n", result);
+        assertEquals(1, result);
+    }
+
+    @Test
+    void insertAnotherEntry_OneRowHavingBeenImpacted() {
+        Person person = Person.builder().firstName("Tom").lastName("Bruce").personId(101).build();
         int result = crudeMethods.insert(person);
         log.info("insert result: %d \n", result);
         assertEquals(1, result);

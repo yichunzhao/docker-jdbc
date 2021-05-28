@@ -27,9 +27,8 @@ public class PostgresSqlDBDao extends AbstractDao implements CrudeMethods<Person
         String sql = "select * from Person p where p.personId = {id}";
         String query = replaceQueryParameters(placeholderMap, sql);
 
-        try {
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
                 int personId = resultSet.getInt("personId");
@@ -58,8 +57,7 @@ public class PostgresSqlDBDao extends AbstractDao implements CrudeMethods<Person
 
         int result = -1;
 
-        try {
-            Statement statement = conn.createStatement();
+        try (Statement statement = conn.createStatement()) {
             result = statement.executeUpdate(query);
         } catch (SQLException e) {
             log.error(e.toString());

@@ -1,14 +1,17 @@
 package com.ynz.demo.dockerjdbc.conn;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+@Slf4j
 public class DatabaseConnFactory {
 
     public static Connection createPostgresSqlConn(String host, String port, String user, String password, String databaseName) {
-        Connection conn = null;
+        Connection con = null;
 
         Properties dbProperties = new Properties();
         dbProperties.put("user", user);
@@ -17,12 +20,12 @@ public class DatabaseConnFactory {
         String url = getUrl("postgresql", host, port, databaseName);
 
         try {
-            conn = DriverManager.getConnection(url, dbProperties);
+            con = DriverManager.getConnection(url, dbProperties);
         } catch (SQLException e) {
-            System.err.println(e);
+            log.error(e.getMessage());
         }
 
-        return conn;
+        return con;
     }
 
     public static Connection defaultPostgresSqlConn() {

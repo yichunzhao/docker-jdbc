@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @Slf4j
 class PostgresSqlDBDaoTest {
@@ -33,7 +34,7 @@ class PostgresSqlDBDaoTest {
     void insertOneRaw_ThenOneRowImpacted() {
         Person person = Person.builder().firstName("Mike").lastName("Zhao").personId(100).build();
         int result = crudeMethods.insert(person);
-        log.info("insert result: %d \n", result);
+        log.info("insert result: {} \n", result);
         assertEquals(1, result);
     }
 
@@ -41,7 +42,7 @@ class PostgresSqlDBDaoTest {
     void insertAnotherEntry_OneRowHavingBeenImpacted() {
         Person person = Person.builder().firstName("Tom").lastName("Bruce").personId(101).build();
         int result = crudeMethods.insert(person);
-        log.info("insert result: %d \n", result);
+        log.info("insert result: {} \n", result);
         assertEquals(1, result);
     }
 
@@ -51,6 +52,10 @@ class PostgresSqlDBDaoTest {
 
     @Test
     void deleteById() {
+        crudeMethods.deleteById(100);
+        
+        Person found = crudeMethods.findById(100);
+        assertNull(found);
     }
 
 }

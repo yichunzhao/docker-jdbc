@@ -72,8 +72,19 @@ public class PostgresSqlDBDao extends AbstractDao implements CrudeMethods<Person
     }
 
     @Override
-    public void deleteById(Integer integer) {
+    public void deleteById(Integer id) {
+        Map<String, String> placeholderMap = new HashMap<>();
+        placeholderMap.put("id", String.valueOf(id));
 
+        String sql = "delete from Person where personId = {id}";
+        String query = super.replaceQueryParameters(placeholderMap, sql);
+
+        try (Statement statement = super.conn.createStatement()) {
+            int ret = statement.executeUpdate(query);
+            log.info("deleteById ret : {} \n", ret);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
     }
 
 }

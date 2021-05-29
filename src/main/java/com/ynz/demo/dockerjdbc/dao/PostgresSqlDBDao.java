@@ -67,8 +67,31 @@ public class PostgresSqlDBDao extends AbstractDao implements CrudeMethods<Person
     }
 
     @Override
-    public Person update(Integer integer, Person entity) {
-        return null;
+    public Person update(Integer id, Person pPerson) {
+        Map<String, String> placeholderMap = new HashMap<>();
+        placeholderMap.put("personId", String.valueOf(id));
+        placeholderMap.put("firstName", super.singleQuotedString(pPerson.getFirstName()));
+        placeholderMap.put("lastName", super.singleQuotedString(pPerson.getLastName()));
+
+        String sql = "update Person set firstName = {firstName}, lastName={lastName} where personId = {personId}";
+
+        Person updatedPerson = null;
+
+        String query = super.replaceQueryParameters(placeholderMap, sql);
+        try (Statement statement = super.conn.createStatement()) {
+            int ret = statement.executeUpdate(query);
+
+            log.info("update : return {} \n", ret);
+            if (ret == 1) {
+                updatedPerson = Person.builder()
+                        .firstName(pPerson.getFirstName()).lastName(pPerson.getLastName())
+                        .personId(pPerson.getPersonId()).build();
+            }
+        } catch (SQLException e) {
+            log.error("update table: ", e);
+        }
+
+        return updatedPerson;
     }
 
     @Override

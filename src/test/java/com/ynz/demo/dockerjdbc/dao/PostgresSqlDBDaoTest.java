@@ -33,6 +33,7 @@ class PostgresSqlDBDaoTest {
     @Test
     void insertOneRaw_ThenOneRowImpacted() {
         Person person = Person.builder().firstName("Mike").lastName("Zhao").personId(100).build();
+
         int result = crudeMethods.insert(person);
         log.info("insert result: {} \n", result);
         assertEquals(1, result);
@@ -48,12 +49,31 @@ class PostgresSqlDBDaoTest {
 
     @Test
     void update() {
+        Person pPerson = Person.builder().firstName("xyz").lastName("opq").build();
+
+        Person updatedPerson = crudeMethods.update(100, pPerson);
+        assertAll(
+                () -> assertNotNull(updatedPerson),
+                () -> assertThat(updatedPerson.getFirstName(), is("xyz")),
+                () -> assertThat(updatedPerson.getLastName(), is("opq"))
+        );
+    }
+
+    @Test
+    void whenUpdateUnExistedPerson_ItReturnsNull() {
+        Person found = crudeMethods.findById(200);
+        assertNull(found);
+
+        Person pPerson = Person.builder().firstName("xyz").lastName("opq").build();
+
+        Person updatedPerson = crudeMethods.update(200, pPerson);
+        assertNull(updatedPerson);
     }
 
     @Test
     void deleteById() {
         crudeMethods.deleteById(100);
-        
+
         Person found = crudeMethods.findById(100);
         assertNull(found);
     }

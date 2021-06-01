@@ -1,6 +1,6 @@
 # docker-jdbc
 
-init. a Postgres container, mapping container internal port 5432 to the local system at the port 5435
+init. a Postgres container, mapping container internal port 5432(Postgres default exposure port) to the local system at the port 5435
 
 ````
 docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -d postgres:latest
@@ -11,7 +11,7 @@ docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -d postgres:
 
 Setup Gui pgAdmin 
 
-Linking the Postgres container to a new server
+Linking the Postgres container to a new server; it allows operations on the Database instead of command lines. 
 
 ![image](https://user-images.githubusercontent.com/17804600/119435564-a7fb5d80-bd1a-11eb-924d-bb90ae279ec2.png)
 

@@ -9,7 +9,7 @@ docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -d postgres:
 ![image](https://user-images.githubusercontent.com/17804600/119436141-efceb480-bd1b-11eb-9158-ac7b703e02b0.png)
 
 
-Connecting to PostgreSql via Gui pgAdmin 
+**Connecting to PostgreSql via Gui pgAdmin** 
 
 Linking the Postgres container to a new server; it allows operations on the Database instead of command lines. 
 
@@ -30,7 +30,13 @@ docker run --help
 
 ![image](https://user-images.githubusercontent.com/17804600/119532437-2a206c00-bd85-11eb-8a96-e25d81c23902.png)
 
-Connecting to PostgreSql container via docker Exec 
+
+detach mode: This command starts the container, prints its id, and then returns to the shell prompt. Thus, we can continue with other tasks while the container continues to run in the background. We can connect to this container later using either its name or container id.
+
+**Connecting to PostgreSql container via Exec**
+
+The Exec command allows the client go inside a running container, and execute commands
+
 ````
 docker exec -it myPostgres bash
 
@@ -65,4 +71,25 @@ Connecting to PostgreSql container via SQL shell(psql)
 
 ![image](https://user-images.githubusercontent.com/17804600/119606214-71911180-bdf2-11eb-87a6-08342c16b089.png)
 
+
+**List containers**
+
+list all running containers
+
+````
+docker ps  
+````
+docker ps -a : list all containers no matter which status
+
+The filtering flag (-f or --filter) format is a key=value pair. If there is more than one filter, then pass multiple flags (e.g. --filter "foo=bar" --filter "bif=baz")
+
+docker ps -f key=value: list out running containers which match the given key-value.
+docker ps -f key=value -a: list out all containers which match the given key-value.
+
+![image](https://user-images.githubusercontent.com/17804600/120453941-bf2df100-c393-11eb-8b57-38f88acb9bdd.png)
+
+
+** Restart an existing container**
+
+![image](https://user-images.githubusercontent.com/17804600/120457779-049fed80-c397-11eb-85f4-0b3c20cbbe76.png)
 

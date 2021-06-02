@@ -89,7 +89,7 @@ docker ps -f key=value -a: list out all containers which match the given key-val
 ![image](https://user-images.githubusercontent.com/17804600/120453941-bf2df100-c393-11eb-8b57-38f88acb9bdd.png)
 
 
-** Restart an existing container**
+**Restart an existing container**
 
 ![image](https://user-images.githubusercontent.com/17804600/120457779-049fed80-c397-11eb-85f4-0b3c20cbbe76.png)
 

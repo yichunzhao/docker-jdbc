@@ -67,10 +67,26 @@ Options:
 
 ![image](https://user-images.githubusercontent.com/17804600/119606115-3d1d5580-bdf2-11eb-95d3-ad2960724899.png)
 
-Connecting to PostgreSql container via SQL shell(psql) 
+
+**Connecting to PostgreSql container via SQL shell(psql)** 
 
 ![image](https://user-images.githubusercontent.com/17804600/119606214-71911180-bdf2-11eb-87a6-08342c16b089.png)
 
+Display Commands: You can append + to show more details.
+
+* \\l: List all database (or \list).
+* \\d: Display all tables, indexes, views, and sequences.
+* \\dt: Display all tables.
+* \\di: Display all indexes.
+* \\dv: Display all views.
+* \\ds: Display all sequences.
+* \\dT: Display all types.
+* \\dS: Display all system tables.
+* \\du: Display all users.
+
+* \\?: show all psql commands.
+* \\c dbname [username]: Connect to database, with an optional username (or \connect).
+* \\h sql-cmd: show syntax on sql command
 
 **List containers**
 

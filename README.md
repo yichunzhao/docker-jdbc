@@ -109,3 +109,10 @@ docker ps -f key=value -a: list out all containers which match the given key-val
 
 ![image](https://user-images.githubusercontent.com/17804600/120457779-049fed80-c397-11eb-85f4-0b3c20cbbe76.png)
 
+````
+docker ps
+````
+
+![image](https://user-images.githubusercontent.com/17804600/120463011-c1944900-c39b-11eb-9364-2a23f0dd6c9b.png)
+
+

@@ -112,6 +112,8 @@ The filtering flag (-f or --filter) format is a key=value pair. If there is more
 docker ps -f key=value: list out running containers which match the given key-value.
 docker ps -f key=value -a: list out all containers which match the given key-value.
 
+[current supported filtering key-value](https://docs.docker.com/engine/reference/commandline/ps/)
+
 ![image](https://user-images.githubusercontent.com/17804600/120453941-bf2df100-c393-11eb-8b57-38f88acb9bdd.png)
 
 

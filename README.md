@@ -88,6 +88,16 @@ Display Commands: You can append + to show more details.
 * \\c dbname [username]: Connect to database, with an optional username (or \connect).
 * \\h sql-cmd: show syntax on sql command
 
+**Connecting to PostgreSql container via Psql**
+
+````
+psql -h localhost -U username databasename
+````
+
+![image](https://user-images.githubusercontent.com/17804600/120614338-6889eb00-c457-11eb-8cc1-c067ef5fd91b.png)
+
+
+
 **List containers**
 
 list all running containers

@@ -127,4 +127,12 @@ docker ps
 
 ![image](https://user-images.githubusercontent.com/17804600/120463011-c1944900-c39b-11eb-9364-2a23f0dd6c9b.png)
 
+**Runnig PostgreSql init script**
 
+Step inside the PostgreSql container, and list folders. At the root folder, there is a folder /docker-entrypoint-initdb.d, where it allows to do additional initialization in an image derived from the PostgreSql image, and add one or more *.sql, *.sql.gz, or *.sh scripts. After the entrypoint calls initdb to create the default postgres user and database, it will run any *.sql files, run any executable *.sh scripts, and source any non-executable *.sh scripts found in that directory to do further initialization before starting the service.  
+
+![image](https://user-images.githubusercontent.com/17804600/120797061-d7d90b00-c53b-11eb-84a4-fe9b4f20f47b.png)
+
+**Populating DB**
+
+how to populate data in an existing PostgreSql container?

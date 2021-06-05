@@ -136,3 +136,14 @@ Step inside the PostgreSql container, and list folders. At the root folder, ther
 **Populating DB**
 
 how to populate data in an existing PostgreSql container?
+
+**Docker voluems**
+
+We may need to back up current PostgreSql database data, and bring them in to a new PostgresSQL instance. 
+
+By default, the PostgreSQL container picks up a random folder to store data. In order to back up a database, it needs to specify a host folder as a volume and mounting it on the PostgreSQL container, pointing it to PostgreSQL default data folder: ``/var/lib/postgresql/data``. In this way, we have the database data synchronised via the volume, and we may backup via the shared volume.  
+
+
+
+
+

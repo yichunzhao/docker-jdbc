@@ -139,9 +139,20 @@ how to populate data in an existing PostgreSql container?
 
 **Docker voluems**
 
-We may need to back up current PostgreSql database data, and bring them in to a new PostgresSQL instance. 
+We may need to back up current PostgreSql database data, and bring them back as creating a new PostgresSQL container instance. 
 
-By default, the PostgreSQL container picks up a random folder to store data. In order to back up a database, it needs to specify a host folder as a volume and mounting it on the PostgreSQL container, pointing it to PostgreSQL default data folder: ``/var/lib/postgresql/data``. In this way, we have the database data synchronised via the volume, and we may backup via the shared volume.  
+By default, the PostgreSQL docker container pick up a random folder at the host computer to store data. In order to back up a database, it needs to specify a host folder as a volume and mounting it on the PostgreSQL container, pointing it to PostgreSQL folder: ``/var/lib/postgresql/data´´. In this way, we have the database data synchronised via the volume, and we may backup via the shared volume.  
+
+![image](https://user-images.githubusercontent.com/17804600/120910448-6609da00-c67f-11eb-88dd-694212c6367a.png)
+
+
+````
+docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -v ~/srv/myposgres:/var/lib/postgresql/data postgres:latest
+````
+
+Console print out: 
+
+![image](https://user-images.githubusercontent.com/17804600/120926839-c845f780-c6de-11eb-9c3b-a9fb3347091b.png)
 
 
 

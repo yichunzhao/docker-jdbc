@@ -139,6 +139,8 @@ how to populate data in an existing PostgreSql container?
 
 **Docker voluems**
 
+> Docker volumes on Windows are always created in the path of the graph driver, which is where Docker stores all image layers, writeable container layers and volumes. By default > the root of the graph driver in Windows is C:\ProgramData\docker, but you can mount a volume to a specific directory when you run a container.
+
 We may need to back up current PostgreSql database data, and bring them back as creating a new PostgresSQL container instance. 
 
 By default, the PostgreSQL docker container pick up a random folder at the host computer to store data. In order to back up a database, it needs to specify a host folder as a volume and mounting it on the PostgreSQL container, pointing it to PostgreSQL folder: ``/var/lib/postgresql/data´´. In this way, we have the database data synchronised via the volume, and we may backup via the shared volume.  

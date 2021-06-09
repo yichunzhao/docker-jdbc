@@ -156,7 +156,11 @@ Console print out:
 
 ![image](https://user-images.githubusercontent.com/17804600/120926839-c845f780-c6de-11eb-9c3b-a9fb3347091b.png)
 
+Named volume
 
+instead of default volume or mounting a specific host folder, using a name volume is commonly applied in the production env.
+
+![image](https://user-images.githubusercontent.com/17804600/121440055-6cea6280-c987-11eb-9774-6c6d58b94048.png)
 
 
 

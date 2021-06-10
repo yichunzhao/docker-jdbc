@@ -142,35 +142,23 @@ a) When having no volume specified, the PostgreSQL docker container pick up a ra
 docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -v /var/lib/postgresql/data postgres:latest
 ````
 
-b) You may mount a specific host folder on a PostgreSQL container, pointing it to PostgreSQL folder: 
-/var/lib/postgresql/data. In this way, we have the database data synchronised 
-via the volume, and we may backup via the shared volume.
+b) You may mount a specific host file folder on a PostgreSQL container, and pointing it to PostgreSQL default data folder: 
+/var/lib/postgresql/data. In this way, we may persist the container data on the host file system. 
 
 ````
 docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -v ${pwd}:/var/lib/postgresql/data postgres:latest
 ````
-
-c) In contrast to the anonymous volume, mapping a volume-name to the virtual folder, then achieving a named volume. 
-The name volume is mostly used in the production. It allows the host to the manage the volume, meanwhile leaving the
-key to access them. 
+c) Giving an anonymous volume a specific name, then achieving a named volume. 
+The named volume is mostly used in production. It allows a host to the manage volumes, meanwhile leaving access to them. 
 
 ````
 docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -v postgresVolume:/var/lib/postgresql/data -d postgres:latest
 ````
 
-**Running PostgreSQL init script**
-
-Step inside the PostgreSQL container, and list folders. At the root folder, 
-there is a folder /docker-entrypoint-initdb.d, where it allows to do additional initialization in an image derived 
-from the PostgreSql image, and add one or more *.sql, *.sql.gz, or *.sh scripts. After the entrypoint calls 
-initdb to create the default postgres user and database, it will run any *.sql files, run any executable *.sh scripts, 
-and source any non-executable *.sh scripts found in that directory to do further initialization before starting the service.  
-
-![image](https://user-images.githubusercontent.com/17804600/120797061-d7d90b00-c53b-11eb-84a4-fe9b4f20f47b.png)
-
 **Backup Database**
 
-A named volume is mostly used in a proudction env., as as to leave host to manage volumes. Using a shared named-volume, we may present database in a the new container instance. 
+A named volume is mostly used in a proudction env., as as to leave host to manage volumes. Using a shared named-volume, 
+we may present database in a the new container instance. 
 
 ![image](https://user-images.githubusercontent.com/17804600/121562678-f9ddfc00-ca19-11eb-92e5-0e580c03a887.png)
 
@@ -194,6 +182,16 @@ Login the newly created database, and presenting two previously created tables.
 
 ![image](https://user-images.githubusercontent.com/17804600/121575220-68758680-ca27-11eb-97a5-30624c33fac3.png)
 
+
+**Running PostgreSQL init script**
+
+Step inside the PostgreSQL container, and list folders. At the root folder, 
+there is a folder /docker-entrypoint-initdb.d, where it allows to do additional initialization in an image derived 
+from the PostgreSql image, and add one or more *.sql, *.sql.gz, or *.sh scripts. After the entrypoint calls 
+initdb to create the default postgres user and database, it will run any *.sql files, run any executable *.sh scripts, 
+and source any non-executable *.sh scripts found in that directory to do further initialization before starting the service.  
+
+![image](https://user-images.githubusercontent.com/17804600/120797061-d7d90b00-c53b-11eb-84a4-fe9b4f20f47b.png)
 
 **Populating DB**
 

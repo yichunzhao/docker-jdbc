@@ -88,7 +88,7 @@ Display Commands: You can append + to show more details.
 **Connecting to PostgreSQL container via Psql**
 
 ````
-psql -h localhost -U username databasename
+psql -h localhost -p Port -U username -d databasename
 ````
 
 ![image](https://user-images.githubusercontent.com/17804600/120614338-6889eb00-c457-11eb-8cc1-c067ef5fd91b.png)

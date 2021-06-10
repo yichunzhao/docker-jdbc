@@ -116,7 +116,6 @@ docker ps -f key=value -a: list out all containers which match the given key-val
 
 ![image](https://user-images.githubusercontent.com/17804600/120453941-bf2df100-c393-11eb-8b57-38f88acb9bdd.png)
 
-
 **Restart an existing container**
 
 ![image](https://user-images.githubusercontent.com/17804600/120457779-049fed80-c397-11eb-85f4-0b3c20cbbe76.png)
@@ -127,21 +126,12 @@ docker ps
 
 ![image](https://user-images.githubusercontent.com/17804600/120463011-c1944900-c39b-11eb-9364-2a23f0dd6c9b.png)
 
-**Runnig PostgreSql init script**
-
-Step inside the PostgreSql container, and list folders. At the root folder, there is a folder /docker-entrypoint-initdb.d, where it allows to do additional initialization in an image derived from the PostgreSql image, and add one or more *.sql, *.sql.gz, or *.sh scripts. After the entrypoint calls initdb to create the default postgres user and database, it will run any *.sql files, run any executable *.sh scripts, and source any non-executable *.sh scripts found in that directory to do further initialization before starting the service.  
-
-![image](https://user-images.githubusercontent.com/17804600/120797061-d7d90b00-c53b-11eb-84a4-fe9b4f20f47b.png)
-
-**Populating DB**
-
-how to populate data in an existing PostgreSql container?
 
 **Docker voluems**
 
-> Docker volumes on Windows are always created in the path of the graph driver, which is where Docker stores all image layers, writeable container layers and volumes. By default > the root of the graph driver in Windows is C:\ProgramData\docker, but you can mount a volume to a specific directory when you run a container.
+We may need to back up current PostgreSQL database data and bring them back as creating a new PostgresSQL container instance. However, the container cannot persist data, it has to reply on to plug into a folder located at the host into the container, by this way the container then is able to persist the data at the host file system.
 
-We may need to back up current PostgreSql database data, and bring them back as creating a new PostgresSQL container instance. 
+> Docker volumes on Windows are always created in the path of the graph driver, which is where Docker stores all image layers, writeable container layers and volumes. By default > the root of the graph driver in Windows is C:\ProgramData\docker, but you can mount a volume to a specific directory when you run a container.
 
 By default, the PostgreSQL docker container pick up a random folder at the host computer to store data. In order to back up a database, it needs to specify a host folder as a volume and mounting it on the PostgreSQL container, pointing it to PostgreSQL folder: ``/var/lib/postgresql/data´´. In this way, we have the database data synchronised via the volume, and we may backup via the shared volume.  
 
@@ -163,4 +153,13 @@ instead of default volume or mounting a specific host folder, using a name volum
 ![image](https://user-images.githubusercontent.com/17804600/121440055-6cea6280-c987-11eb-9774-6c6d58b94048.png)
 
 
+**Runnig PostgreSql init script**
 
+Step inside the PostgreSql container, and list folders. At the root folder, there is a folder /docker-entrypoint-initdb.d, where it allows to do additional initialization in an image derived from the PostgreSql image, and add one or more *.sql, *.sql.gz, or *.sh scripts. After the entrypoint calls initdb to create the default postgres user and database, it will run any *.sql files, run any executable *.sh scripts, and source any non-executable *.sh scripts found in that directory to do further initialization before starting the service.  
+
+![image](https://user-images.githubusercontent.com/17804600/120797061-d7d90b00-c53b-11eb-84a4-fe9b4f20f47b.png)
+
+
+**Populating DB**
+
+how to populate data in an existing PostgreSql container?

@@ -143,7 +143,7 @@ docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -v /var/lib/
 ````
 
 b) You may mount a specific host folder on a PostgreSQL container, pointing it to PostgreSQL folder: 
-``/var/lib/postgresql/data´´. In this way, we have the database data synchronised 
+/var/lib/postgresql/data. In this way, we have the database data synchronised 
 via the volume, and we may backup via the shared volume.
 
 ````
@@ -154,7 +154,9 @@ c) In contrast to the anonymous volume, mapping a volume-name to the virtual fol
 The name volume is mostly used in the production. It allows the host to the manage the volume, meanwhile leaving the
 key to access them. 
 
-![image](https://user-images.githubusercontent.com/17804600/121440055-6cea6280-c987-11eb-9774-6c6d58b94048.png)
+````
+docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -v postgresVolume:/var/lib/postgresql/data -d postgres:latest
+````
 
 **Running PostgreSQL init script**
 
@@ -168,7 +170,29 @@ and source any non-executable *.sh scripts found in that directory to do further
 
 **Backup Database**
 
-We may use named volume to backup database data and represent them in the new container instance via a shared-volume.
+A named volume is mostly used in a proudction env., as as to leave host to manage volumes. Using a shared named-volume, we may present database in a the new container instance. 
+
+![image](https://user-images.githubusercontent.com/17804600/121562678-f9ddfc00-ca19-11eb-92e5-0e580c03a887.png)
+
+create two tables in the myPostgres
+
+![image](https://user-images.githubusercontent.com/17804600/121575672-ec2f7300-ca27-11eb-9014-a2eab0cb9a3f.png)
+
+create another postgreSql container instance, and mounting with the well-known named-volume; so we have two containers sharing the same volume. 
+
+````
+docker run --name anotherPostgres -p 5436:5432 -e POSTGRES_PASSWORD=test -v postgresVolume:/var/lib/postgresql/data -d postgres:latest
+````
+
+![image](https://user-images.githubusercontent.com/17804600/121568869-7673d900-ca20-11eb-8683-684a5efd4d25.png)
+
+Create a new container PostgreSql container instance, and mounting this named volume. 
+
+![image](https://user-images.githubusercontent.com/17804600/121569787-72948680-ca21-11eb-8ece-40628a1a3d1a.png)
+
+Login the newly created database, and presenting two previously created tables.
+
+![image](https://user-images.githubusercontent.com/17804600/121575220-68758680-ca27-11eb-97a5-30624c33fac3.png)
 
 
 **Populating DB**

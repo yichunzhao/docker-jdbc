@@ -20,12 +20,9 @@ docker run [options]
 docker run --help
 
 ````
--p, --publish list                   Publish a container's port(s) to
-                                       the host
+-p, --publish list                   Publish a container's port(s) to  the host
 -e, --env list                       Set environment variables
-
--d, --detach                         Run container in background and
-                                       print container ID
+-d, --detach                         Run container in background and print container ID
 ````
 
 ![image](https://user-images.githubusercontent.com/17804600/119532437-2a206c00-bd85-11eb-8a96-e25d81c23902.png)
@@ -128,19 +125,22 @@ docker ps
 **Docker volumes**
 
 We may need to back up current PostgreSQL database data and bring them back as creating a new PostgresSQL container instance.
-However, the container cannot persist data, it has to reply on to plug into a folder located at the host,
-by this way the container then is able to persist the data at the host file system.
+However, the container has a virtual file system that cannot persist data. When the container is removed or restarted, 
+the data is gone. So in order to persist data, the container needs to plug in a physical folder located at the host, 
+by this way it may persist the data even after the container having been removed or restarted.
 
-> Docker volumes on Windows are always created in the path of the graph driver, which is where Docker stores all image layers, writeable container layers and volumes. By default 
+> Docker volumes on Windows are always created in the path of the graph driver, which is where Docker stores all image 
+> layers, writeable container layers and volumes. By default 
 > the root of the graph driver in Windows is C:\ProgramData\docker, but you can mount a volume to a specific directory when you run a container.
 >
 
-There are three ways to mount container volumes, a) default volume, b) mounting a specific host file folder, c) named volume
+There are three ways to mount container volumes, a) anonymous volume, b) mounting a specific host file folder, c) named volume
 
-a) By default, if having no volume specified, the PostgreSQL docker container pick up a random folder at the host to store data.   
-
-![image](https://user-images.githubusercontent.com/17804600/120910448-6609da00-c67f-11eb-88dd-694212c6367a.png)
-
+a) When having no volume specified, the PostgreSQL docker container pick up a random folder at the host to store data.
+   
+````
+docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -v /var/lib/postgresql/data postgres:latest
+````
 
 b) You may mount a specific host folder on a PostgreSQL container, pointing it to PostgreSQL folder: 
 ``/var/lib/postgresql/data´´. In this way, we have the database data synchronised 
@@ -150,20 +150,25 @@ via the volume, and we may backup via the shared volume.
 docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -v ${pwd}:/var/lib/postgresql/data postgres:latest
 ````
 
-Console print out: 
-
-![image](https://user-images.githubusercontent.com/17804600/120926839-c845f780-c6de-11eb-9c3b-a9fb3347091b.png)
-
-c) Named volume is a way between default volume and specific volume, by offering a specific name to a default volume.
+c) In contrast to the anonymous volume, mapping a volume-name to the virtual folder, then achieving a named volume. 
+The name volume is mostly used in the production. It allows the host to the manage the volume, meanwhile leaving the
+key to access them. 
 
 ![image](https://user-images.githubusercontent.com/17804600/121440055-6cea6280-c987-11eb-9774-6c6d58b94048.png)
 
-
 **Running PostgreSQL init script**
 
-Step inside the PostgreSQL container, and list folders. At the root folder, there is a folder /docker-entrypoint-initdb.d, where it allows to do additional initialization in an image derived from the PostgreSql image, and add one or more *.sql, *.sql.gz, or *.sh scripts. After the entrypoint calls initdb to create the default postgres user and database, it will run any *.sql files, run any executable *.sh scripts, and source any non-executable *.sh scripts found in that directory to do further initialization before starting the service.  
+Step inside the PostgreSQL container, and list folders. At the root folder, 
+there is a folder /docker-entrypoint-initdb.d, where it allows to do additional initialization in an image derived 
+from the PostgreSql image, and add one or more *.sql, *.sql.gz, or *.sh scripts. After the entrypoint calls 
+initdb to create the default postgres user and database, it will run any *.sql files, run any executable *.sh scripts, 
+and source any non-executable *.sh scripts found in that directory to do further initialization before starting the service.  
 
 ![image](https://user-images.githubusercontent.com/17804600/120797061-d7d90b00-c53b-11eb-84a4-fe9b4f20f47b.png)
+
+**Backup Database**
+
+We may use named volume to backup database data and represent them in the new container instance via a shared-volume.
 
 
 **Populating DB**

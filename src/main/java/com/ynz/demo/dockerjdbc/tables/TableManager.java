@@ -15,22 +15,14 @@ public class TableManager {
     }
 
     public int createTable(String sql) {
-
         log.info("create table: " + sql);
 
         int result = -1;
-        try {
-            Statement statement = this.conn.createStatement();
+        try (Statement statement = this.conn.createStatement()) {
             result = statement.executeUpdate(sql);
             log.info("create table result: " + result);
         } catch (SQLException e) {
             log.error(e.getMessage());
-        } finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                log.error(e.getMessage());
-            }
         }
 
         return result;

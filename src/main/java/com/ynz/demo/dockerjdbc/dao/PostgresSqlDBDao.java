@@ -1,6 +1,7 @@
 package com.ynz.demo.dockerjdbc.dao;
 
 import com.ynz.demo.dockerjdbc.domain.Person;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringSubstitutor;
 
@@ -44,7 +45,7 @@ public class PostgresSqlDBDao extends AbstractDao implements CrudeMethods<Person
     }
 
     @Override
-    public int insert(Person person) {
+    public int insert(@NonNull Person person) {
         Map<String, String> placeholderMap = new HashMap<>();
         placeholderMap.put("personId", String.valueOf(person.getPersonId()));
         placeholderMap.put("firstName", singleQuotedString(person.getFirstName()));

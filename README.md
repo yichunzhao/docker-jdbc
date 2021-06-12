@@ -69,7 +69,7 @@ Options:
 
 ![image](https://user-images.githubusercontent.com/17804600/119606214-71911180-bdf2-11eb-87a6-08342c16b089.png)
 
-Display Commands: You can append + to show more details.
+Display [PSQL](https://www.postgresql.org/docs/13/app-psql.html) Commands: You can append + to show more details.
 
 * \\l: List all database (or \list).
 * \\d: Display all tables, indexes, views, and sequences.

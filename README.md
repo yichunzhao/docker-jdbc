@@ -207,11 +207,11 @@ how to populate data in an existing PostgreSql container?
 * For all SQL operations on a database, the preferred programming approach is to close the Connection and Statement objects. You must either close them explicitly by calling close() on them or use them with a try-with-resources statement, which auto-closes them. 
 * Note that you need to call method executeUpdate() on Statement and not executeQuery() to execute a Data Definition Language (DDL) request.
 * There are two ways to connect to a database: by using class java.sql.DriverManager or the interface javax.sql.DataSource. Class DriverManager was included in the JDBC API since its beginning and the interface DataSource was added later in JDBC version 2.0. Class DriverManager is the preferred class to establish database connections with Java SE applications because DataSource works with the Java Naming and Directory Interface (JNDI). JNDI is usually supported by Java applications with a container that supports JNDI like Java Enterprise Edition Server.
-* The JDBC URL determines the appropriate driver for a given URL string. For example jdbc:subprotocol://<host>:<port>/<database_name>
+* The JDBC URL determines the appropriate driver for a given URL string. For example jdbc:subprotocol:\//<host>:<port>\/<database_name>
 * JDBC 4.0 and its later versions support automatic loading and registration of all JDBC drivers accessible via an application’s class path. You no longer need to explicitly
 load the driver in memory using Class.forName(). 
 * A JDBC driver is a set of classes provided by the database vendor, or a third party, usually in a .jar or .zip file, to support the JDBC API. A Driver class is an
-implementation of the interface java.sql.Driver in a JDBC driver. For example, for MySQL, its platform-independent JDBC driver can be downloaded as mysql-connector-java-5.1.27.zip. The name of the class that implements java.sql.Driver in MySQL Connector/J (JDBC driver) is com.mysql.jdbc.Driver.  
+implementation of the interface java.sql.Driver in a JDBC driver. For example, for MySQL, its platform-independent JDBC driver can be downloaded as mysql-connector-java-5.1.27.zip. The name of the class that implements java.sql.Driver in MySQL Connector\/J (JDBC driver) is com.mysql.jdbc.Driver.  
   
   
   

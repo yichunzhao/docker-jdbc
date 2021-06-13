@@ -208,6 +208,7 @@ how to populate data in an existing PostgreSql container?
 * Note that you need to call method executeUpdate() on Statement and not executeQuery() to execute a Data Definition Language (DDL) request.
 * There are two ways to connect to a database: by using class java.sql.DriverManager or the interface javax.sql.DataSource. Class DriverManager was included in the JDBC API since its beginning and the interface DataSource was added later in JDBC version 2.0. Class DriverManager is the preferred class to establish database connections with Java SE applications because DataSource works with the Java Naming and Directory Interface (JNDI). JNDI is usually supported by Java applications with a container that supports JNDI like Java Enterprise Edition Server.
 * The JDBC URL determines the appropriate driver for a given URL string. For example  _jdbc:subprotocol://\<host>:\<port>/\<database_name>_
+* The default port for MySQL is 3306. Usually, if the default port is being used by the database server, the :<port> value of the JDBC URL can be omitted.
 * JDBC 4.0 and its later versions support automatic loading and registration of all JDBC drivers accessible via an application’s class path. You no longer need to explicitly
 load the driver in memory using Class.forName(). 
 * A JDBC driver is a set of classes provided by the database vendor, or a third party, usually in a .jar or .zip file, to support the JDBC API. A Driver class is an

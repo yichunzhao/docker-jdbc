@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+/**
+ * executeUpdate DDL(create, delete table) returns 0
+ */
 class TableManagerTest {
 
     private TableManager manager;

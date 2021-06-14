@@ -1,6 +1,5 @@
 package com.ynz.demo.dockerjdbc.transaction;
 
-
 import com.ynz.demo.dockerjdbc.conn.DatabaseConnFactory;
 import com.ynz.demo.dockerjdbc.tables.TableManager;
 import lombok.extern.slf4j.Slf4j;
@@ -12,21 +11,19 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.sql.Statement;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Method executeUpdate() returns a count of the rows that are
- * or would be affected in the database for row insertions, modifications,
- * and deletion. The value is returned even if the statement isn’t committed.
- * This method returns 0 for SQL DDL statements, which create database
- * objects and modify their structure or delete them.
+ * Rolling back partial transaction
+ * Creating savingPoints within a transaction;
+ * and then rolling back partial transactions from the bottom to a savingPoint.
  */
 @Slf4j
-public class TransactionTest {
+public class RollingBackPartialTransactionTest {
+
     private static final String ACC_SQL = "CREATE TABLE ACCOUNTS(ACCT_NO INT NOT NULL PRIMARY KEY, ACCT_NAME VARCHAR(50) NOT NULL, BALANCE DECIMAL)";
     private static final String TRANS_SQL =
             "CREATE TABLE TRANSACTIONS(TRANS_ID INT NOT NULL PRIMARY KEY, ACCT_NO INT NOT NULL, TYPE VARCHAR(50), AMOUNT DECIMAL NOT NULL, TRANS_DATE DATE, FOREIGN KEY(ACCT_NO) REFERENCES ACCOUNTS(ACCT_NO))";
@@ -40,20 +37,20 @@ public class TransactionTest {
         TableManager tableManager = new TableManager(DatabaseConnFactory.defaultPostgresSqlConn());
 
         tableManager.createTable(ACC_SQL);
-
         tableManager.createTable(TRANS_SQL);
 
         try (Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("insert into accounts values(5555, 'Selvan Rajan', 999.0)");
-            stmt.executeUpdate("insert into accounts values(7777, 'Paul Rosenthal', 100.0)");
+            stmt.executeUpdate("insert into accounts values(5555, 'Selvan Rajan', 1000.0)");
+            stmt.executeUpdate("insert into accounts values(7777, 'Paul Rosenthal', 10000.0)");
+            stmt.executeUpdate("insert into accounts values(9999, 'Bruce Lee', 100.0)");
         } catch (SQLException e) {
-            log.error("Preparing table: ", e);
+            log.error("Preparing tables: ", e);
         }
 
     }
 
     @Test
-    @DisplayName("moving from 5555 to 7777")
+    @DisplayName("creating savingPoints and roll back partial trans")
     void TransferMoneyFromOneAccountTwoAnotherInOneTransaction() {
         //consisting of several steps
         try {
@@ -62,30 +59,31 @@ public class TransactionTest {
 
             Statement statement = conn.createStatement();
 
-            //insert row 1 in the table transaction
-            int ret1 = statement.executeUpdate("insert into transactions values(1, 5555, 'debit', 55.0, '2000-01-02')");
-            assertThat(ret1, is(1));
+            statement.executeUpdate("insert into transactions values(1, 5555, 'cr', 2000.0, '2000-01-02')");
+            statement.executeUpdate("update accounts set balance = 3000.0 where acct_no=5555");
+            Savepoint s1 = conn.setSavepoint();
 
-            //insert row 2 in the table transaction
-            int ret2 = statement.executeUpdate("insert into transactions values(2, 7777,'credit', 55.0, '2000-01-02')");
-            assertThat(ret2, is(1));
+            statement.executeUpdate("insert into transactions values(2, 7777,'cr', 20000.0, '2000-01-02')");
+            statement.executeUpdate("update accounts set balance = 40000.0 where acct_no=7777");
+            Savepoint s2 = conn.setSavepoint();
 
-            //debit 55.0 from account 5555
-            int ret3 = statement.executeUpdate("update accounts set balance = 944.0 where acct_no=5555");
-            assertThat(ret3, is(1));
+            statement.executeUpdate("insert into transactions values(3, 9999,'cr', 900.0, '2000-01-02')");
+            statement.executeUpdate("update accounts set balance = 1000.0 where acct_no=9999");
+            Savepoint s3 = conn.setSavepoint();
 
-            //credit 55.0 on account 7777
-            int ret4 = statement.executeUpdate("update accounts set balance = 155.0 where acct_no=7777");
-            assertThat(ret4, is(1));
+            //rolling back transactions to savingPoint 2
+            conn.rollback(s2);
 
-            //the end of transaction;
+            //saving the rest transactions, i.e. the ones above s2
             conn.commit();
+
             conn.setAutoCommit(true);
         } catch (SQLException e) {
             log.error("trans-money transaction", e);
 
             //if any exception, rolling back.
             try {
+                //roll back transactions.
                 conn.rollback();
             } catch (SQLException ex) {
                 log.error("during rolling back transaction: ", e);
@@ -93,26 +91,33 @@ public class TransactionTest {
         }
 
         //checking both accounts
-        double balance_5555 = 0;
-        double balance_7777 = 0;
+        double balance5555 = 0D;
+        double balance7777 = 0D;
+        double balance9999 = 0D;
         try (Statement statement = conn.createStatement()) {
-            ResultSet result = statement.executeQuery("select a.balance from accounts a where acct_no=5555");
+            ResultSet result5555 = statement.executeQuery("select a.balance from accounts a where acct_no=5555");
 
-            while (result.next()) {
-                balance_5555 = result.getDouble("balance");
+            while (result5555.next()) {
+                balance5555 = result5555.getDouble("balance");
             }
 
-            ResultSet result1 = statement.executeQuery("select a.balance from accounts a where acct_no=7777");
-            while (result1.next()) {
-                balance_7777 = result1.getDouble("balance");
+            ResultSet result7777 = statement.executeQuery("select a.balance from accounts a where acct_no=7777");
+            while (result7777.next()) {
+                balance7777 = result7777.getDouble("balance");
+            }
+
+            ResultSet result9999 = statement.executeQuery("select a.balance from accounts a where acct_no=9999");
+            while (result9999.next()) {
+                balance9999 = result9999.getDouble("balance");
             }
 
         } catch (SQLException e) {
             log.error("accessing accounts", e);
         }
 
-        assertEquals(944.0, balance_5555);
-        assertEquals(155.0, balance_7777);
+        assertEquals(3_000D, balance5555);
+        assertEquals(40_000D, balance7777);
+        assertEquals(100D, balance9999);
     }
 
     @AfterAll

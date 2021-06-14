@@ -69,7 +69,7 @@ Options:
 
 ![image](https://user-images.githubusercontent.com/17804600/119606214-71911180-bdf2-11eb-87a6-08342c16b089.png)
 
-Display Commands: You can append + to show more details.
+Display [PSQL](https://www.postgresql.org/docs/13/app-psql.html) Commands: You can append + to show more details.
 
 * \\l: List all database (or \list).
 * \\d: Display all tables, indexes, views, and sequences.
@@ -149,7 +149,7 @@ b) You may mount a specific host file folder on a PostgreSQL container, and poin
 docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -v ${pwd}:/var/lib/postgresql/data postgres:latest
 ````
 c) Giving an anonymous volume a specific name, then achieving a named volume. 
-The named volume is mostly used in production. It allows a host to the manage volumes, meanwhile leaving access to them. 
+The named volume is mostly used in production. It leaves a host to manage volumes, meanwhile allows to share volumes among containers. 
 
 ````
 docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -v postgresVolume:/var/lib/postgresql/data -d postgres:latest
@@ -196,3 +196,23 @@ and source any non-executable *.sh scripts found in that directory to do further
 **Populating DB**
 
 how to populate data in an existing PostgreSql container?
+
+
+##Tips Of JDBC
+
+* Method executeUpdate() returns a count of the rows that are or would be affected in the database for row insertions, modifications, and deletion. The value is returned even if the statement isn’t committed. This method returns 0 for SQL DDL statements, which create database objects and modify their structure or delete them. 
+* If your SQL statement doesn’t return any rows, the ResultSet object doesn’t point to a null value. In this case, you’ll get a ResultSet object that won’t include any rows.
+* Although everything in Java is 0-based, column indexes in a ResultSet are 1-based.
+* Method executeQuery() is used for SQL SELECT statements.
+* For all SQL operations on a database, the preferred programming approach is to close the Connection and Statement objects. You must either close them explicitly by calling close() on them or use them with a try-with-resources statement, which auto-closes them. 
+* Note that you need to call method executeUpdate() on Statement and not executeQuery() to execute a Data Definition Language (DDL) request.
+* There are two ways to connect to a database: by using class java.sql.DriverManager or the interface javax.sql.DataSource. Class DriverManager was included in the JDBC API since its beginning and the interface DataSource was added later in JDBC version 2.0. Class DriverManager is the preferred class to establish database connections with Java SE applications because DataSource works with the Java Naming and Directory Interface (JNDI). JNDI is usually supported by Java applications with a container that supports JNDI like Java Enterprise Edition Server.
+* The JDBC URL determines the appropriate driver for a given URL string. For example  _jdbc:subprotocol://\<host>:\<port>/\<database_name>_
+* Usually, if the default port is being used by the database server, the :<port> value of the JDBC URL can be omitted.
+* JDBC 4.0 and its later versions support automatic loading and registration of all JDBC drivers accessible via an application’s class path. You no longer need to explicitly
+load the driver in memory using Class.forName(). 
+* A JDBC driver is a set of classes provided by the database vendor, or a third party, usually in a .jar or .zip file, to support the JDBC API. A Driver class is an
+implementation of the interface java.sql.Driver in a JDBC driver. For example, for MySQL, its platform-independent JDBC driver can be downloaded as mysql-connector-java-5.1.27.zip. The name of the class that implements java.sql.Driver in MySQL Connector\/J (JDBC driver) is com.mysql.jdbc.Driver.  
+  
+  
+  

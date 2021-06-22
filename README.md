@@ -169,6 +169,7 @@ docker network ls : list all docker networks.
 
 ![image](https://user-images.githubusercontent.com/17804600/122885017-f9f5ca00-d33e-11eb-9406-90dd46509150.png)
 
+
 **Run mongoDb container**
 
 mongoDb default port is 27017
@@ -186,6 +187,19 @@ Environment Variables:
 * MONGO_INITDB_DATABASE: init. a mongo database with a name; may overskip it and define a database from mongo express
 
 These variables, used in conjunction, create a new user and set that user's password. This user is created in the admin authentication database and given the role of root, which is a "superuser" role.
+
+**Run mongo Express**
+
+[Mongo-Express env. var.](https://hub.docker.com/_/mongo-express)
+
+````
+docker run --name mongo-express -p 8081:8081 -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=test -e ME_CONFIG_MONGODB_SERVER=my-mongodb --network mongo-network -d mongo-express 
+````
+
+![image](https://user-images.githubusercontent.com/17804600/122893141-54deef80-d346-11eb-8697-5a0f59242a26.png)
+
+![image](https://user-images.githubusercontent.com/17804600/122893472-a7201080-d346-11eb-8123-73ef7d0e587a.png)
+
 
 **Backup Database**
 
@@ -212,10 +226,13 @@ Create a new container PostgreSql container instance, and mounting this named vo
 
 Login the newly created database, and presenting two previously created tables.
 
+
 ![image](https://user-images.githubusercontent.com/17804600/121575220-68758680-ca27-11eb-97a5-30624c33fac3.png)
 
 ````
 docker logs my-mongodb
+
+docker logs my-mongodb | tail : show the tail of the log
 ````
 
 ![image](https://user-images.githubusercontent.com/17804600/122887333-15fa6b00-d341-11eb-8a6c-51d1d7fb3017.png)

@@ -155,6 +155,38 @@ The named volume is mostly used in production. It leaves a host to manage volume
 docker run --name myPostgres -p 5435:5432 -e POSTGRES_PASSWORD=test -v postgresVolume:/var/lib/postgresql/data -d postgres:latest
 ````
 
+
+**Docker network**
+
+We may need to deploy our application and database together, and leaving them talking with each other. In such a case, we need to define a docker network to connect them together. 
+
+Docker network is another docker concept.  When deploying more than one container on an isolated docker network, containers can talk with others directly by using container names, without localhost, port number, etc.   
+````
+docker network create new-network-name: create a new docker network.
+
+docker network ls : list all docker networks.
+````
+
+![image](https://user-images.githubusercontent.com/17804600/122885017-f9f5ca00-d33e-11eb-9406-90dd46509150.png)
+
+**Run mongoDb container**
+
+mongoDb default port is 27017
+
+````
+docker run --name my-mongodb -p 27017:27017 --network mongo-network -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=test -d mongo:latest
+````
+
+![image](https://user-images.githubusercontent.com/17804600/122886363-3118ab00-d340-11eb-86ea-85d64055ca45.png)
+
+Environment Variables: 
+
+* MONGO_INITDB_ROOT_USERNAME: define root user 
+* MONGO_INITDB_ROOT_PASSWORD: define his password
+* MONGO_INITDB_DATABASE: init. a mongo database with a name; may overskip it and define a database from mongo express
+
+These variables, used in conjunction, create a new user and set that user's password. This user is created in the admin authentication database and given the role of root, which is a "superuser" role.
+
 **Backup Database**
 
 A named volume is mostly used in a proudction env., as as to leave host to manage volumes. Using a shared named-volume, 
@@ -181,6 +213,12 @@ Create a new container PostgreSql container instance, and mounting this named vo
 Login the newly created database, and presenting two previously created tables.
 
 ![image](https://user-images.githubusercontent.com/17804600/121575220-68758680-ca27-11eb-97a5-30624c33fac3.png)
+
+````
+docker logs my-mongodb
+````
+
+![image](https://user-images.githubusercontent.com/17804600/122887333-15fa6b00-d341-11eb-8a6c-51d1d7fb3017.png)
 
 
 **Running PostgreSQL init script**
